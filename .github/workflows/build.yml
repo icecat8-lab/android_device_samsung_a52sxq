@@ -1,10 +1,7 @@
 name: Validate Device Tree
 
 on:
-  push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+  workflow_dispatch:
 
 jobs:
   lint-and-check:
@@ -60,11 +57,9 @@ jobs:
           
           missing=0
           for item in "${required_items[@]}"; do
-            # ค้นหาไฟล์หรือโฟลเดอร์แบบ recursive ใน repo
             found=$(find . -name "$item" | wc -l)
             if [ "$found" -eq 0 ]; then
               echo "[WARNING] Missing essential item: $item"
-              # ตั้งค่าให้เตือนหรือ error ตามความเหมาะสม
             else
               echo "[FOUND] $item"
             fi

@@ -1,0 +1,72 @@
+name: Validate Device Tree
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  lint-and-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Validate XML Syntax (VINTF & Configs)
+        run: |
+          python3 -c "
+          import xml.etree.ElementTree as ET
+          import glob, sys
+
+          print('=== Starting XML Syntax Validation ===')
+          xml_files = glob.glob('**/*.xml', recursive=True)
+          if not xml_files:
+              print('No XML files found.')
+              sys.exit(0)
+
+          error_count = 0
+          for xml_file in xml_files:
+              try:
+                  ET.parse(xml_file)
+                  print(f'[PASS] Valid XML: {xml_file}')
+              except Exception as e:
+                  print(f'[FAIL] Invalid XML: {xml_file} -> {e}')
+                  error_count += 1
+
+          if error_count > 0:
+              print(f'\nFound {error_count} XML syntax error(s)!')
+              sys.exit(1)
+          else:
+            print('\nAll XML files are syntactically valid!')
+          "
+
+      - name: Check Essential Structure
+        run: |
+          echo "=== Checking Essential Device Tree Components ==="
+          required_items=(
+            "a52sxq.mk"
+            "BoardConfig.mk"
+            "device.mk"
+            "configs"
+            "init"
+            "audio"
+          )
+          
+          missing=0
+          for item in "${required_items[@]}"; do
+            # ค้นหาไฟล์หรือโฟลเดอร์แบบ recursive ใน repo
+            found=$(find . -name "$item" | wc -l)
+            if [ "$found" -eq 0 ]; then
+              echo "[WARNING] Missing essential item: $item"
+              # ตั้งค่าให้เตือนหรือ error ตามความเหมาะสม
+            else
+              echo "[FOUND] $item"
+            fi
+          done
+          echo "Structure check completed."

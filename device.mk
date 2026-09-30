@@ -25,7 +25,7 @@ PRODUCT_SOONG_NAMESPACES += \
 # Inherit vendor proprietary blobs for a52sxq
 $(call inherit-product-if-exists, vendor/samsung/a52sxq/a52sxq-vendor.mk)
 
-# Device Properties (Galaxy A52s 5G Specific)
+# Device Properties (Galaxy A52s 5G & maru Identity)
 PRODUCT_PROPERTY_OVERRIDES += \
     bluetooth.device.default_name=Galaxy A52s 5G \
     ro.vendor.fingerprint.type=udfps_optical \

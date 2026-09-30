@@ -153,7 +153,11 @@ PRODUCT_PACKAGES += \
     WifiOverlay \
     TetheringConfigOverlay
 
-# Copy local device configurations
+# Copy local device configurations & Media/Audio XMLs
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/permissions/privapp-permissions-hotword.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/privapp-permissions-hotword.xml \
-    $(LOCAL_PATH)/vendor.prop:$(TARGET_COPY_OUT_VENDOR)/build.prop
+    $(LOCAL_PATH)/vendor.prop:$(TARGET_COPY_OUT_VENDOR)/build.prop \
+    $(LOCAL_PATH)/configs/media/media_codecs_yupik_v0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_yupik_v0.xml[span_1](start_span)[span_1](end_span) \
+    $(LOCAL_PATH)/configs/media/media_codecs_yupik_v1.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_yupik_v1.xml[span_2](start_span)[span_2](end_span) \
+    $(LOCAL_PATH)/configs/media/media_profiles.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles.xml[span_3](start_span)[span_3](end_span) \
+    $(LOCAL_PATH)/configs/media/media_profiles_vendor.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles_vendor.xml[span_4](start_span)[span_4](end_span)
